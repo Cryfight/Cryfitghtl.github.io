@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notas del Colegio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #cfe8f3; /* Fondo celeste pastel */
+        }
+
+        .background-image {
+            background-image: url('tu_imagen_de_fondo.jpg'); /* Ruta de la imagen de fondo */
+            background-size: cover; /* Ajustar la imagen para cubrir toda la pantalla */
+            background-position: center; /* Centrar la imagen horizontal y verticalmente */
+            background-repeat: no-repeat; /* Evitar que se repita la imagen */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        header {
+            color: #fff;
+            text-align: right;
+            padding: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header .logo-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        header .logo-container img {
+            max-width: 60px; /* Ajustar el tamaño máximo del logo */
+        }
+
+        .container {
+            max-width: 300px;
+            margin: 100px auto; /* Ajuste de margen superior para posicionar más arriba */
+            padding: 40px; /* Ajuste de espacio alrededor del formulario */
+            background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco semi-transparente */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        form {
+            text-align: left;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            padding: 12px; /* Ajuste del tamaño del campo de entrada */
+            margin: 10px 0; /* Ajuste del margen entre campos de entrada */
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: calc(100% - 24px); /* Ajuste del ancho del campo de entrada */
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            padding: 12px 20px; /* Ajuste del tamaño del botón */
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+            text-decoration: underline; /* Subrayado del mensaje de error */
+        }
+
+        .notes {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+
+        #languageMenu {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+
+        #languageSelect {
+            padding: 5px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #f9f9f9;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {
+                padding-top: 15px;
+            }
+
+            .sidenav a {
+                font-size: 18px;
+            }
+        }
+
+        .menu-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .menu-icon::before,
+        .menu-icon::after {
+            content: "";
+            display: block;
+            width: 30px;
+            height: 4px;
+            background-color: #fff;
+            margin: 6px 0;
+            border-radius: 2px;
+        }
+
+        .menu-icon::after {
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="background-image"></div>
+
+<header>
+    <div class="logo-container">
+        <a href="https://www.mep.go.cr/"> <!-- Cambia "https://example.com" por la URL de destino -->
+            <img src="logo_colegio.png" alt="Logo del Colegio">
+        </a>
+    </div>
+    <div class="menu-icon" onclick="openNav()"></div>
+</header>
+
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <!-- Contenido de la ventana lateral -->
+    <a href="https://www.facebook.com/CTPLASPALMITAS" target="_blank">Facebook</a>
+    <a href="#" onclick="mostrarNumero()">Teléfono</a>
+    <a href="#" onclick="redirigirCorreo()">Correo electrónico</a>
+</div>
+
+<div class="container">
+    <div id="loginForm">
+        <p>Ingresar Datos</p>
+        <form id="login" action="#" method="post">
+            <input type="text" name="cedula" placeholder="Cédula" required><br>
+            <input type="password" name="password" placeholder="Contraseña" required><br>
+            <input type="submit" value="Iniciar Sesión" id="loginButton">
+        </form>
+    </div>
+    <div id="notaContainer" class="notes" style="display: none;">
+        <h2 id="gradeTitle">Notas del Estudiante</h2>
+        <table>
+            <thead>
+            <tr>
+                <th id="subjectHeader">Asignatura</th>
+                <th id="gradeHeader">Nota</th>
+            </tr>
+            </thead>
+            <tbody id="notasBody">
+            <!-- Aquí se cargarán las notas mediante JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <div id="errorMessage" class="error-message" style="display: none;"></div>
+</div>
+
+<script>
+    // Obtener elementos que necesitan traducción
+    var loginButton = document.getElementById("loginButton");
+    var gradeTitle = document.getElementById("gradeTitle");
+    var subjectHeader = document.getElementById("subjectHeader");
+    var gradeHeader = document.getElementById("gradeHeader");
+    var errorMessage = document.getElementById("errorMessage");
+
+    // Función para cambiar el idioma
+    function changeLanguage(language) {
+        // Diccionario de traducción
+        var translations = {
+            'es': {
+                'loginButton': 'Iniciar Sesión',
+                'gradeTitle': 'Notas del Estudiante',
+                'subjectHeader': 'Asignatura',
+                'gradeHeader': 'Nota',
+                'errorMessage': 'Cédula o contraseña incorrectos'
+            },
+            'en': {
+                'loginButton': 'Log In',
+                'gradeTitle': 'Student Grades',
+                'subjectHeader': 'Subject',
+                'gradeHeader': 'Grade',
+                'errorMessage': 'Incorrect ID or password'
+            }
+        };
+
+        // Aplicar traducciones según el idioma seleccionado
+        loginButton.value = translations[language]['loginButton'];
+        gradeTitle.textContent = translations[language]['gradeTitle'];
+        subjectHeader.textContent = translations[language]['subjectHeader'];
+        gradeHeader.textContent = translations[language]['gradeHeader'];
+        errorMessage.textContent = translations[language]['errorMessage'];
+    }
+
+    // Obtener el select para cambiar el idioma
+    var languageSelect = document.getElementById("languageSelect");
+
+    // Escuchar cambios en el select
+    languageSelect.addEventListener("change", function () {
+        var selectedLanguage = languageSelect.value;
+        changeLanguage(selectedLanguage);
+    });
+
+    // Cambiar al idioma predeterminado (español) al cargar la página
+    changeLanguage('es');
+
+    // Función para manejar el envío del formulario de inicio de sesión
+    document.getElementById("login").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var cedula = document.getElementsByName("cedula")[0].value;
+        var password = document.getElementsByName("password")[0].value;
+        // Aquí iría la lógica para validar el inicio de sesión, por ejemplo, con AJAX
+        // Supongamos que el inicio de sesión es correcto:
+        if (cedula === "123456" && password === "123456") {
+            document.getElementById("loginForm").style.display = "none";
+            document.getElementById("notaContainer").style.display = "block";
+            // Aquí iría la lógica para cargar las notas del estudiante
+            // Supongamos que las notas son las siguientes:
+            var notas = {
+                "Matemáticas": 8,
+                "Ciencias": 7,
+                "Historia": 9
+            };
+            var notasBody = document.getElementById("notasBody");
+            for (var asignatura in notas) {
+                var fila = document.createElement("tr");
+                var celdaAsignatura = document.createElement("td");
+                celdaAsignatura.textContent = asignatura;
+                var celdaNota = document.createElement("td");
+                celdaNota.textContent = notas[asignatura];
+                fila.appendChild(celdaAsignatura);
+                fila.appendChild(celdaNota);
+                notasBody.appendChild(fila);
+            }
+        } else {
+            errorMessage.style.display = "block";
+            // No cambiamos el idioma del mensaje de error, ya que el usuario no ha seleccionado un idioma nuevo
+            // Limpiar los campos de usuario y contraseña
+            document.getElementsByName("cedula")[0].value = "";
+            document.getElementsByName("password")[0].value = "";
+        }
+    });
+
+    // Función para abrir la ventana lateral
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+    }
+
+    // Función para cerrar la ventana lateral
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+
+    // Función para mostrar el número de teléfono
+    function mostrarNumero() {
+        alert("Número de teléfono: 2709 8328");
+    }
+
+    // Función para enviar correo electrónico
+    function enviarCorreo() {
+        window.location.href = "mailto:ctp.laspalmitas@mep.go.cr";
+    }
+
+    // Función para redirigir a la página de correo electrónico
+    function redirigirCorreo() {
+        window.location.href = "https://mail.google.com/mail/?view=cm&fs=1&to=ctp.laspalmitas@mep.go.cr";
+    }
+</script>
+
+</body>
+</html>
